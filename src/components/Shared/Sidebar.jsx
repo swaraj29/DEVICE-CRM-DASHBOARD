@@ -51,13 +51,13 @@ const Sidebar = () => {
               mx: 1,
               borderRadius: '999px',
               backgroundColor:
-                location.pathname === path ? '#f0f0f0' : 'transparent',
+                location.pathname === path ? 'var(--card-bg)' : 'transparent',
               '&:hover': {
-                backgroundColor: '#f0f0f0',
+                backgroundColor: 'var(--card-bg)',
               },
             }}
           >
-            <ListItemIcon sx={{ color: '#121212', minWidth: 40 }}>{icon}</ListItemIcon>
+            <ListItemIcon sx={{ color: 'var(--text-color)', minWidth: 40 }}>{icon}</ListItemIcon>
             <ListItemText
               primary={label}
               primaryTypographyProps={{ fontSize: 14 }}
@@ -79,17 +79,17 @@ const Sidebar = () => {
             top: 12,
             right: 40, // changed from left to right
             zIndex: (theme) => theme.zIndex.drawer + 2,
-            backgroundColor: '#ffffff',
-            border: '1px solid #cccccc',
+            backgroundColor: 'var(--appbar-bg)',
+            border: '1px solid var(--border-color)',
             boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
             '&:hover': {
-              backgroundColor: '#f5f5f5',
+              backgroundColor: 'var(--card-bg)',
             },
             width: 40,
             height: 40,
           }}
         >
-          <MenuIcon sx={{ color: '#121212' }} />
+          <MenuIcon sx={{ color: 'var(--text-color)' }} />
         </IconButton>
       )}
 
@@ -107,10 +107,10 @@ const Sidebar = () => {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            backgroundColor: '#ffffff',
-            color: '#121212',
-            borderRight: isMobile ? 'none' : '1px solid #000000',
-            borderLeft: isMobile ? '1px solid #000000' : 'none',
+            backgroundColor: 'var(--appbar-bg)',
+            color: 'var(--text-color)',
+            borderRight: isMobile ? 'none' : '1px solid var(--border-color)',
+            borderLeft: isMobile ? '1px solid var(--border-color)' : 'none',
             boxSizing: 'border-box',
           },
         }}

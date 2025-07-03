@@ -27,6 +27,7 @@
     margin-bottom: 1.5rem;
     font-weight: 700;
     text-align: center;
+    color: var(--text-color);
 
     @media (max-width: 599px) {
       font-size: 1.5rem;
@@ -37,9 +38,10 @@
   .form-section {
     padding: 1.5rem;
     border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    background-color: #fafafa;
+    border: 1px solid var(--border-color, #e0e0e0);
+    background-color: var(--card-bg, #fafafa);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
 
 
   @media (min-width: 1024px) {
@@ -63,10 +65,36 @@
     .submit-btn {
       width: fit-content;
       margin-top: 0.75rem;
+      background: var(--appbar-bg, #1976d2);
+      color: var(--text-color, #fff);
+      border: 1px solid var(--border-color, #1976d2);
 
       @media (max-width: 599px) {
         width: 100%;
       }
+    }
+
+    .MuiInputBase-root,
+    .MuiOutlinedInput-root,
+    .MuiInputLabel-root,
+    .MuiSelect-icon {
+      color: var(--text-color) !important;
+    }
+    .MuiOutlinedInput-notchedOutline {
+      border-color: var(--border-color) !important;
+    }
+    .MuiOutlinedInput-root {
+      background: var(--card-bg) !important;
+    }
+    .MuiInputLabel-root {
+      background: var(--card-bg);
+      color: var(--text-color) !important;
+    }
+    .Mui-focused .MuiInputLabel-root {
+      color: var(--text-color) !important;
+    }
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: var(--appbar-bg, #1976d2) !important;
     }
   }
 
@@ -79,7 +107,8 @@
       object-fit: cover;
       margin-top: 0.5rem;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-color, #ccc);
+      background: var(--card-bg, #fafafa);
 
       @media (max-width: 599px) {
         max-height: 140px;
@@ -89,14 +118,24 @@
 
   .alert-list {
     margin-top: 2rem;
+    color: var(--text-color);
+
+      @media (min-width: 1024px) {
+    margin-left: 12px;
+
+  }
+
+
+
   }
 
   .alert-card {
     padding: 1rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #ddd);
     border-radius: 12px;
     transition: box-shadow 0.2s;
+    color: var(--text-color) !important;
 
     @media (min-width: 1024px) {
     margin-left: 18rem;
@@ -113,6 +152,8 @@
       max-height: 160px;
       object-fit: cover;
       border-radius: 8px;
+      border: 1px solid var(--border-color, #ccc);
+      background: var(--card-bg, #fff);
     }
 
     @media (max-width: 599px) {

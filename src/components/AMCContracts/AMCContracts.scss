@@ -4,8 +4,8 @@
   width: 100%;
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
-  color: #1c1c1e;
-  background-color: #ffffff;
+  color: var(--container-text);
+  background-color: var(--container-bg);
   margin-left: 108px;
 
   // 🔁 Responsive adjustments for padding and margin
@@ -49,7 +49,7 @@
   .subheading {
     // Section subheading or description
     font-size: 14px;
-    color: #6e6e73;
+    color: var(--subheading-text, #6e6e73);
     margin-bottom: 28px;
 
     @media (max-width: 640px) {
@@ -91,11 +91,12 @@
 
   .table-container {
     // Wrapper for table with border and scroll
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border: 1px solid var(--table-border, #000);
+    border-radius: 24px;
     overflow-x: auto;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--table-shadow);
     white-space: nowrap;
+    background: var(--table-bg, transparent);
 
     // 📱 Mobile table stretch: allow wider view with left shift
     @media (max-width: 640px) {
@@ -136,9 +137,8 @@
 
       th {
         // Table headers
-        background-color: #f9fafb;
-        font-weight: 600;
-        color: #374151;
+        background-color: var(--th-bg, #f9fafb);
+        color: var(--th-color, #374151);
         height: 48px;
         padding: 12px 16px;
         text-align: left;
@@ -146,15 +146,20 @@
 
       td {
         // Table cells
-        color: #1f2937;
+        color: var(--td-color);
         height: 56px;
         padding: 12px 16px;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid var(--table-border, #e5e7eb);
+        transition: color 0.35s cubic-bezier(.4,0,.2,1);
+
+        @media (prefers-color-scheme: dark) {
+          color: var(--td-color-dark);
+        }
       }
 
       .link-cell {
         // Clickable cell link (e.g., View Contract)
-        color: #3b82f6;
+        color: var(--link-cell, #3b82f6);
         font-weight: 500;
         cursor: pointer;
         text-decoration: none;
@@ -171,23 +176,23 @@
         align-items: center;
 
         &.amc {
-          background-color: #eef2ff;
-          color: #4f46e5;
+          background-color: var(--chip-amc-bg, #eef2ff);
+          color: var(--chip-amc-color, #4f46e5);
         }
 
         &.cmc {
-          background-color: #fef3c7;
-          color: #d97706;
+          background-color: var(--chip-cmc-bg, #fef3c7);
+          color: var(--chip-cmc-color, #d97706);
         }
 
         &.active {
-          background-color: #dcfce7;
-          color: #15803d;
+          background-color: var(--chip-active-bg, #dcfce7);
+          color: var(--chip-active-color, #15803d);
         }
 
         &.expiring-soon {
-          background-color: #fef2f2;
-          color: #b91c1c;
+          background-color: var(--chip-expiring-bg, #fef2f2);
+          color: var(--chip-expiring-color, #b91c1c);
         }
       }
     }
@@ -210,14 +215,14 @@
       border-radius: 8px;
       padding: 8px 16px;
       font-size: 14px;
-      background-color: #ffffff;
-      border: 1px solid #d1d5db;
-      color: #1f2937;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      background-color: var(--export-btn-bg, #ffffff);
+      border: 1px solid var(--export-btn-border, #d1d5db);
+      color: var(--export-btn-color, #1f2937);
+      box-shadow: var(--export-btn-shadow, 0 1px 2px rgba(0, 0, 0, 0.05));
       transition: all 0.2s;
 
       &:hover {
-        background-color: #f3f4f6;
+        background-color: var(--export-btn-hover-bg, #f3f4f6);
       }
     }
   }

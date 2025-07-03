@@ -19,14 +19,15 @@ import dayjs from 'dayjs';
 import { addService } from '../../redux/slices/serviceSlice';
 import { updateDevice, fetchDevices } from '../../redux/slices/deviceSlice';
 
+// Styled components use only CSS variables for theme support
 const UploadBox = styled(Box)(({ theme }) => ({
-  border: '2px dashed #d1d5db',
+  border: `2px dashed var(--border-color, #d1d5db)`,
   padding: theme.spacing(6),
   borderRadius: theme.spacing(1),
   textAlign: 'center',
-  backgroundColor: '#fafafa',
+  backgroundColor: 'var(--card-bg, #fafafa)',
   marginTop: theme.spacing(1),
-  color: '#666',
+  color: 'var(--text-color, #666)',
   minHeight: '120px',
   display: 'flex',
   flexDirection: 'column',
@@ -34,36 +35,12 @@ const UploadBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  '& .MuiOutlinedInput-root': {
-    borderRadius: theme.spacing(1),
-    backgroundColor: '#fafafa',
-    '& fieldset': {
-      borderColor: '#e0e0e0',
-    },
-    '&:hover fieldset': {
-      borderColor: '#bdbdbd',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: '#1976d2',
-    },
-  },
+const StyledTextField = styled(TextField)(() => ({
+  // All color/background handled by global CSS and .card-white-text-dark
 }));
 
-const StyledFormControl = styled(FormControl)(({ theme }) => ({
-  '& .MuiOutlinedInput-root': {
-    borderRadius: theme.spacing(1),
-    backgroundColor: '#fafafa',
-    '& fieldset': {
-      borderColor: '#e0e0e0',
-    },
-    '&:hover fieldset': {
-      borderColor: '#bdbdbd',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: '#1976d2',
-    },
-  },
+const StyledFormControl = styled(FormControl)(() => ({
+  // All color/background handled by global CSS and .card-white-text-dark
 }));
 
 const SaveButton = styled(Button)(({ theme }) => ({
@@ -76,6 +53,7 @@ const SaveButton = styled(Button)(({ theme }) => ({
   fontWeight: 500,
   textTransform: 'none',
   boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
+  transition: 'box-shadow 0.35s cubic-bezier(.4,0,.2,1)',
   '&:hover': {
     boxShadow: '0 6px 16px rgba(25, 118, 210, 0.4)',
   },
@@ -157,7 +135,6 @@ const ServiceVisitForm = () => {
   const handleUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onloadend = () => {
       formDispatch({ type: 'SET_ATTACHMENT', value: reader.result });
@@ -167,7 +144,6 @@ const ServiceVisitForm = () => {
 
   const handleSubmit = async () => {
     const { deviceId, facility, date, engineer, purpose, isFunctional } = form;
-
     if (!deviceId || !facility || !date || !engineer || !purpose) {
       setSnackbar({
         open: true,
@@ -176,7 +152,6 @@ const ServiceVisitForm = () => {
       });
       return;
     }
-
     if (purpose === 'Breakdown' && !isFunctional) {
       setSnackbar({
         open: true,
@@ -185,24 +160,16 @@ const ServiceVisitForm = () => {
       });
       return;
     }
-
     const formattedDate = dayjs(form.date).format('YYYY-MM-DD');
-
-    const payload = {
-      ...form,
-      date: formattedDate,
-    };
-
+    const payload = { ...form, date: formattedDate };
     try {
       await dispatch(addService(payload)).unwrap();
-
       const device = devices.find((d) => d.id === deviceId);
       if (device) {
         const updatedDevice = {
           ...device,
           lastServiceDate: formattedDate,
         };
-
         if (purpose === 'Preventive') {
           updatedDevice.status = 'Online';
         } else if (purpose === 'Breakdown') {
@@ -210,17 +177,14 @@ const ServiceVisitForm = () => {
         } else if (purpose === 'Maintenance') {
           updatedDevice.status = 'Maintenance';
         }
-
         await dispatch(updateDevice({ id: deviceId, data: updatedDevice })).unwrap();
         dispatch(fetchDevices());
       }
-
       setSnackbar({
         open: true,
         message: 'Service visit logged and device updated!',
         severity: 'success',
       });
-
       formDispatch({ type: 'RESET_FORM' });
     } catch (error) {
       console.error(error);
@@ -234,37 +198,39 @@ const ServiceVisitForm = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box maxWidth="600px" mx="auto" px={3} pt={4} pb={12}>
+      <Box maxWidth="600px" mx="auto" px={3} pt={4} pb={12} className="card-white-text-dark">
         <Typography variant="body2" color="text.secondary" mb={2}>
           Service Visits / Log Visit
         </Typography>
-
         <Typography variant="h4" fontWeight="bold" mb={1}>
           Log Field Visit
         </Typography>
-
         <Typography variant="body1" color="text.secondary" mb={4}>
           Record details of your visit to a facility.
         </Typography>
-
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Device ID */}
           <Box>
             <Typography variant="subtitle1" fontWeight="600" mb={1}>
               Device ID
             </Typography>
-            <StyledFormControl fullWidth>
+            <StyledFormControl fullWidth className="card-white-text-dark">
               <Select
                 value={form.deviceId}
                 onChange={handleChange('deviceId')}
                 displayEmpty
                 sx={{ minHeight: '56px' }}
+                MenuProps={{
+                  PaperProps: {
+                    className: 'card-white-text-dark',
+                  },
+                }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="" disabled className="card-white-text-dark">
                   Select device
                 </MenuItem>
                 {devices.map((d) => (
-                  <MenuItem key={d.id} value={d.id}>
+                  <MenuItem key={d.id} value={d.id} className="card-white-text-dark">
                     {d.id} — {d.type}
                   </MenuItem>
                 ))}
@@ -278,6 +244,7 @@ const ServiceVisitForm = () => {
               Facility
             </Typography>
             <StyledTextField
+              className="card-white-text-dark"
               fullWidth
               value={form.facility}
               placeholder="Facility auto-filled"
@@ -293,7 +260,7 @@ const ServiceVisitForm = () => {
             <DatePicker
               value={form.date}
               onChange={handleDateChange}
-              renderInput={(params) => <StyledTextField fullWidth {...params} />}
+              renderInput={(params) => <StyledTextField className="card-white-text-dark" fullWidth {...params} />}
             />
           </Box>
 
@@ -302,18 +269,23 @@ const ServiceVisitForm = () => {
             <Typography variant="subtitle1" fontWeight="600" mb={1}>
               Responsible Engineer
             </Typography>
-            <StyledFormControl fullWidth>
+            <StyledFormControl fullWidth className="card-white-text-dark">
               <Select
                 value={form.engineer}
                 onChange={handleChange('engineer')}
                 displayEmpty
                 sx={{ minHeight: '56px' }}
+                MenuProps={{
+                  PaperProps: {
+                    className: 'card-white-text-dark',
+                  },
+                }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="" disabled className="card-white-text-dark">
                   Select engineer
                 </MenuItem>
                 {engineers.map((e) => (
-                  <MenuItem key={e} value={e}>
+                  <MenuItem key={e} value={e} className="card-white-text-dark">
                     {e}
                   </MenuItem>
                 ))}
@@ -326,18 +298,23 @@ const ServiceVisitForm = () => {
             <Typography variant="subtitle1" fontWeight="600" mb={1}>
               Purpose of Visit
             </Typography>
-            <StyledFormControl fullWidth>
+            <StyledFormControl fullWidth className="card-white-text-dark">
               <Select
                 value={form.purpose}
                 onChange={handleChange('purpose')}
                 displayEmpty
                 sx={{ minHeight: '56px' }}
+                MenuProps={{
+                  PaperProps: {
+                    className: 'card-white-text-dark',
+                  },
+                }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="" disabled className="card-white-text-dark">
                   Select purpose
                 </MenuItem>
                 {purposes.map((p) => (
-                  <MenuItem key={p} value={p}>
+                  <MenuItem key={p} value={p} className="card-white-text-dark">
                     {p}
                   </MenuItem>
                 ))}
@@ -351,18 +328,23 @@ const ServiceVisitForm = () => {
               <Typography variant="subtitle1" fontWeight="600" mb={1}>
                 Is Device Functional?
               </Typography>
-              <StyledFormControl fullWidth>
+              <StyledFormControl fullWidth className="card-white-text-dark">
                 <Select
                   value={form.isFunctional}
                   onChange={handleChange('isFunctional')}
                   displayEmpty
                   sx={{ minHeight: '56px' }}
+                  MenuProps={{
+                    PaperProps: {
+                      className: 'card-white-text-dark',
+                    },
+                  }}
                 >
-                  <MenuItem value="" disabled>
+                  <MenuItem value="" disabled className="card-white-text-dark">
                     Select condition
                   </MenuItem>
                   {conditions.map((c) => (
-                    <MenuItem key={c} value={c}>
+                    <MenuItem key={c} value={c} className="card-white-text-dark">
                       {c}
                     </MenuItem>
                   ))}
@@ -377,6 +359,7 @@ const ServiceVisitForm = () => {
               Notes
             </Typography>
             <StyledTextField
+              className="card-white-text-dark"
               fullWidth
               multiline
               rows={4}
@@ -391,7 +374,7 @@ const ServiceVisitForm = () => {
             <Typography variant="subtitle1" fontWeight="600" mb={1}>
               Attachments
             </Typography>
-            <UploadBox>
+            <UploadBox className="card-white-text-dark">
               <Typography variant="h6" fontWeight="bold" mb={1}>
                 Drag and drop files here
               </Typography>

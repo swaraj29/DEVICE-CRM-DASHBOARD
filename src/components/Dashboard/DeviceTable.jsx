@@ -32,7 +32,11 @@ const getStatusColor = (status) => {
 };
 
 // Helper to set color for AMC/CMC status chip
-const getAMCColor = (status) => (status === 'Active' ? 'success' : 'default');
+const getAMCColor = (status) => {
+  if (status === 'Active') return 'success';
+  if (status === 'Inactive') return 'error'; // Make inactive red for visibility
+  return 'default';
+};
 
 const DeviceTable = () => {
   const dispatch = useDispatch();
@@ -59,10 +63,10 @@ const DeviceTable = () => {
         width: isMobile ? '160%' : '90%',
 
         // No extra spacing on mobile, margin on desktop
-      
         ml: isMobile ? '-60px' : '180px',
         mr: isMobile ? 0 : '240px',
         pb: 3, // Padding at bottom
+        backgroundColor: 'transparent',
       }}
     >
       {/* Title */}
@@ -74,6 +78,7 @@ const DeviceTable = () => {
           textAlign: 'center',
           mb: isMobile ? 1 : 2,
           px: isMobile ? 2 : 0, // Padding only on mobile
+          color: 'var(--text-color)',
         }}
       >
         Device Inventory
@@ -87,6 +92,7 @@ const DeviceTable = () => {
           overflowX: 'auto', // allow horizontal scroll if needed
           borderRadius: isMobile ? 0 : 2, // remove border curve on mobile
           boxShadow: isMobile ? 'none' : '0px 2px 8px rgba(0, 0, 0, 0.1)',
+          backgroundColor: 'var(--card-bg)',
         }}
       >
         {/* Actual table */}
@@ -94,31 +100,32 @@ const DeviceTable = () => {
           size={isMobile ? 'small' : 'medium'}
           sx={{
             minWidth: 650, // ensure table has some base width
+            backgroundColor: 'var(--card-bg)',
           }}
         >
           {/* Table header */}
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+            <TableRow sx={{ backgroundColor: 'var(--bg-color)' }}>
               {/* Column titles */}
-              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem' }}>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem', color: 'var(--text-color)' }}>
                 Device Type
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem' }}>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem', color: 'var(--text-color)' }}>
                 Device ID
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem' }}>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem', color: 'var(--text-color)' }}>
                 Facility
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem' }}>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem', color: 'var(--text-color)' }}>
                 Status
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem' }}>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem', color: 'var(--text-color)' }}>
                 Battery %
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem' }}>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem', color: 'var(--text-color)' }}>
                 Last Service/Install
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem' }}>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: isMobile ? '0.75rem' : '0.9rem', color: 'var(--text-color)' }}>
                 AMC/CMC Status
               </TableCell>
             </TableRow>
@@ -129,15 +136,15 @@ const DeviceTable = () => {
             {devices.map((device) => (
               <TableRow
                 key={device.id}
-                sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }} // highlight row on hover
+                sx={{ '&:hover': { backgroundColor: 'var(--card-bg)' } }} // highlight row on hover
               >
-                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem' }}>
+                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem', color: 'var(--text-color)' }}>
                   {device.type}
                 </TableCell>
-                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem' }}>
+                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem', color: 'var(--text-color)' }}>
                   {device.id}
                 </TableCell>
-                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem' }}>
+                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem', color: 'var(--text-color)' }}>
                   {device.facility}
                 </TableCell>
 
@@ -165,7 +172,7 @@ const DeviceTable = () => {
                     />
                     <Typography
                       variant="body2"
-                      sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem' }}
+                      sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem', color: 'var(--text-color)' }}
                     >
                       {device.battery}%
                     </Typography>
@@ -173,7 +180,7 @@ const DeviceTable = () => {
                 </TableCell>
 
                 {/* Last service/install date */}
-                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem' }}>
+                <TableCell sx={{ fontSize: isMobile ? '0.7rem' : '0.85rem', color: 'var(--text-color)' }}>
                   {device.lastServiceDate}
                 </TableCell>
 
@@ -183,7 +190,13 @@ const DeviceTable = () => {
                     label={device.amcStatus}
                     color={getAMCColor(device.amcStatus)}
                     size="small"
-                    sx={{ fontSize: isMobile ? '0.65rem' : '0.75rem' }}
+                    sx={{
+                      fontSize: isMobile ? '0.65rem' : '0.75rem',
+                      bgcolor: device.amcStatus === 'Inactive' ? '#ffebee' : undefined,
+                      color: device.amcStatus === 'Inactive' ? '#d32f2f' : undefined,
+                      border: device.amcStatus === 'Inactive' ? '1px solid #d32f2f' : undefined,
+                      fontWeight: device.amcStatus === 'Inactive' ? 700 : undefined,
+                    }}
                   />
                 </TableCell>
               </TableRow>

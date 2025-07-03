@@ -5,7 +5,7 @@ import {
   TextField,
   MenuItem,
   Button,
-  Checkbox,
+  Switch,
   FormControlLabel,
   FormGroup,
   Grid,
@@ -13,6 +13,7 @@ import {
   Alert,
   LinearProgress,
   useMediaQuery,
+  Paper,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -23,13 +24,81 @@ import { useDispatch } from 'react-redux';
 import { addInstallation } from '../../redux/slices/installationSlice';
 import { updateDevice } from '../../redux/slices/deviceSlice';
 
+// Themed components for consistent palette/variable usage
+const ThemedTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiInputBase-root': {
+    background: 'var(--card-bg, ' + theme.palette.background.paper + ')',
+    color: 'var(--text-color, ' + theme.palette.text.primary + ')',
+    borderRadius: 8,
+    transition: 'background 0.3s, color 0.3s, border-color 0.3s',
+  },
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'var(--border-color, ' + theme.palette.divider + ')',
+    transition: 'border-color 0.3s',
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'var(--border-color, ' + theme.palette.primary.main + ')',
+  },
+  '& label': {
+    color: 'var(--text-color, ' + theme.palette.text.secondary + ')',
+    transition: 'color 0.3s',
+  },
+  '& label.Mui-focused': {
+    color: 'var(--text-color, ' + theme.palette.primary.main + ')',
+  },
+  '& .MuiInputBase-input': {
+    color: 'var(--text-color, ' + theme.palette.text.primary + ')',
+  },
+  '& .Mui-disabled': {
+    background: 'var(--card-bg, ' + theme.palette.action.disabledBackground + ')',
+    color: 'var(--text-color, ' + theme.palette.text.disabled + ')',
+  },
+}));
+
+const ThemedSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: 'var(--text-color, ' + theme.palette.primary.main + ')',
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: 'var(--border-color, ' + theme.palette.primary.main + ')',
+  },
+  '& .MuiSwitch-track': {
+    backgroundColor: 'var(--border-color, ' + theme.palette.divider + ')',
+    transition: 'background-color 0.3s',
+  },
+}));
+
+const ThemedFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
+  '& .MuiFormControlLabel-label': {
+    color: 'var(--text-color, ' + theme.palette.text.primary + ')',
+    fontWeight: 500,
+    transition: 'color 0.3s',
+  },
+}));
+
 const UploadBox = styled(Box)(({ theme }) => ({
-  border: '2px dashed #d1d5db',
+  border: `2px dashed var(--border-color, ${theme.palette.divider})`,
   padding: theme.spacing(4),
-  borderRadius: theme.spacing(1),
+  borderRadius: theme.spacing(2),
   textAlign: 'center',
-  backgroundColor: '#f1f5f9',
-  color: '#1e293b',
+  backgroundColor: 'var(--card-bg, ' + theme.palette.background.paper + ')',
+  color: 'var(--text-color, ' + theme.palette.text.primary + ')',
+  cursor: 'pointer',
+  transition: 'background-color 0.3s, border-color 0.3s',
+  boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
+  '&:hover': {
+    backgroundColor: 'var(--appbar-bg, ' + theme.palette.action.hover + ')',
+    borderColor: 'var(--border-color, ' + theme.palette.primary.main + ')',
+  },
+}));
+
+const SectionCard = styled(Paper)(({ theme }) => ({
+  background: 'var(--card-bg, ' + theme.palette.background.paper + ')',
+  borderRadius: 16,
+  boxShadow: '0 2px 16px 0 rgba(0,0,0,0.10)',
+  padding: theme.spacing(3),
+  marginBottom: theme.spacing(4),
+  transition: 'background 0.3s, box-shadow 0.3s',
 }));
 
 const checklistItems = [
@@ -39,6 +108,9 @@ const checklistItems = [
 ];
 
 const facilities = ['Apollo Hospital', 'AIIMS', 'Fortis', 'Medanta'];
+
+// Utility function to force white text in dark mode
+const forceWhiteText = (theme) => theme.palette.mode === 'dark' ? { color: '#fff !important' } : {};
 
 const InstallationForm = () => {
   const dispatch = useDispatch();
@@ -161,86 +233,146 @@ const InstallationForm = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box maxWidth="md" mx="auto" px={isMobile ? 1 : 3} py={4} pb={10}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
+        <Typography variant="h5" fontWeight="bold" gutterBottom color="text.primary">
           New Installation
         </Typography>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              required
-              label="Device Serial Number"
-              value={form.serialNumber}
-              onChange={handleChange('serialNumber')}
-            />
+        <SectionCard className="card-white-text-dark">
+          <Box display="flex" alignItems="center" mb={2}>
+            <Typography variant="h6" fontWeight="bold" className="card-white-text-dark" sx={{ mr: 1, display: 'flex', alignItems: 'center', ...forceWhiteText(theme) }}>
+              <span role="img" aria-label="device" style={{ fontSize: 22, marginRight: 8, color: theme.palette.mode === 'dark' ? '#fff' : undefined }}>🔧</span>
+              Installation Data
+            </Typography>
+            <Box flex={1}>
+              <Box component="hr" sx={{ border: 0, borderTop: '1.5px solid var(--border-color, ' + theme.palette.divider + ')', my: 0 }} />
+            </Box>
+          </Box>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <ThemedTextField
+                className="card-white-text-dark"
+                fullWidth
+                required
+                label="Device Serial Number"
+                value={form.serialNumber}
+                onChange={handleChange('serialNumber')}
+                autoComplete="off"
+                helperText="Required. Unique device identifier."
+                aria-label="Device Serial Number"
+                InputLabelProps={{ required: false, style: forceWhiteText(theme) }}
+                sx={forceWhiteText(theme)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <ThemedTextField
+                className="card-white-text-dark"
+                fullWidth
+                required
+                select
+                label="Facility"
+                value={form.facility}
+                onChange={handleChange('facility')}
+                helperText="Required. Select facility."
+                aria-label="Facility"
+                InputLabelProps={{ required: false, style: forceWhiteText(theme) }}
+                sx={forceWhiteText(theme)}
+                SelectProps={{
+                  MenuProps: {
+                    PaperProps: {
+                      className: 'card-white-text-dark',
+                      sx: {
+                        backgroundColor: 'var(--card-bg, #222)',
+                        color: '#fff',
+                      },
+                    },
+                  },
+                }}
+              >
+                {facilities.map((f) => (
+                  <MenuItem key={f} value={f} className="card-white-text-dark" style={{ color: theme.palette.mode === 'dark' ? '#fff' : 'var(--text-color, #121212)', background: 'var(--card-bg, #222)' }}>
+                    {f}
+                  </MenuItem>
+                ))}
+              </ThemedTextField>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <DatePicker
+                label="Installation Date"
+                value={form.installDate}
+                onChange={handleDateChange('installDate')}
+                renderInput={(params) => (
+                  <ThemedTextField
+                    className="card-white-text-dark"
+                    fullWidth
+                    required
+                    {...params}
+                    helperText="Required. Date of installation."
+                    aria-label="Installation Date"
+                    InputLabelProps={{ required: false, style: forceWhiteText(theme) }}
+                    sx={forceWhiteText(theme)}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <ThemedTextField
+                className="card-white-text-dark"
+                fullWidth
+                label="Installed By"
+                value={form.installedBy}
+                onChange={handleChange('installedBy')}
+                helperText="Name of the installer (optional)"
+                aria-label="Installed By"
+                InputLabelProps={{ style: forceWhiteText(theme) }}
+                sx={forceWhiteText(theme)}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              required
-              select
-              label="Facility"
-              value={form.facility}
-              onChange={handleChange('facility')}
-            >
-              {facilities.map((f) => (
-                <MenuItem key={f} value={f}>
-                  {f}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <DatePicker
-              label="Installation Date"
-              value={form.installDate}
-              onChange={handleDateChange('installDate')}
-              renderInput={(params) => <TextField fullWidth required {...params} />}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Installed By"
-              value={form.installedBy}
-              onChange={handleChange('installedBy')}
-            />
-          </Grid>
-        </Grid>
+        </SectionCard>
 
-        <Box mt={4}>
-          <Typography fontWeight="bold" mb={1}>
+        <SectionCard className="card-white-text-dark">
+          <Typography fontWeight="bold" mb={1} color="text.primary" sx={forceWhiteText(theme)}>
             Unboxing Photos
           </Typography>
           <UploadBox>
-            <Typography fontWeight="bold">Upload Photos</Typography>
-            <Typography variant="body2" color="text.secondary" mb={2}>
+            <Typography fontWeight="bold" color="text.primary" sx={forceWhiteText(theme)}>Upload Photos</Typography>
+            <Typography variant="body2" color="text.secondary" mb={2} sx={forceWhiteText(theme)}>
               Drag and drop or browse to upload unboxing photos
             </Typography>
-            <input type="file" accept="image/*" onChange={handleImageUpload} />
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="installation-photo-upload"
+              type="file"
+              onChange={handleImageUpload}
+            />
+            <label htmlFor="installation-photo-upload">
+              <Button variant="contained" component="span" sx={{ transition: 'background 0.3s' }}>
+                Browse Files
+              </Button>
+            </label>
             {form.image && (
               <Box mt={2}>
                 <img
                   src={form.image}
-                  alt="Preview"
-                  style={{ maxWidth: '100%', height: 'auto', borderRadius: 8 }}
+                  alt="Unboxing Preview"
+                  style={{ maxWidth: '100%', height: 'auto', borderRadius: 8, boxShadow: '0 2px 8px 0 rgba(0,0,0,0.08)' }}
                 />
               </Box>
             )}
           </UploadBox>
-        </Box>
+        </SectionCard>
 
-        <Box mt={4}>
-          <Typography fontWeight="bold" mb={1}>
+        <SectionCard className="card-white-text-dark">
+          <Typography fontWeight="bold" mb={1} color="text.primary" sx={forceWhiteText(theme)}>
             Installation Checklist
           </Typography>
           <FormGroup>
             {checklistItems.map((item) => (
-              <FormControlLabel
+              <ThemedFormControlLabel
                 key={item}
                 control={
-                  <Checkbox
+                  <ThemedSwitch
                     checked={form.checklist.includes(item)}
                     onChange={handleChecklistChange(item)}
                   />
@@ -249,15 +381,15 @@ const InstallationForm = () => {
               />
             ))}
           </FormGroup>
-        </Box>
+        </SectionCard>
 
-        <Box mt={4}>
-          <Typography fontWeight="bold" mb={1}>
+        <SectionCard className="card-white-text-dark">
+          <Typography fontWeight="bold" mb={1} color="text.primary" sx={forceWhiteText(theme)}>
             Training Info
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <ThemedTextField
                 fullWidth
                 label="Trainer Name"
                 value={form.trainer}
@@ -265,7 +397,7 @@ const InstallationForm = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <ThemedTextField
                 fullWidth
                 label="Trainee Names"
                 value={form.trainees}
@@ -277,11 +409,11 @@ const InstallationForm = () => {
                 label="Training Date"
                 value={form.trainingDate}
                 onChange={handleDateChange('trainingDate')}
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                renderInput={(params) => <ThemedTextField fullWidth {...params} />}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <ThemedTextField
                 fullWidth
                 multiline
                 rows={3}
@@ -291,21 +423,21 @@ const InstallationForm = () => {
               />
             </Grid>
           </Grid>
-        </Box>
+        </SectionCard>
 
-        <Box mt={4}>
-          <Typography variant="body2" mb={1}>
+        <SectionCard className="card-white-text-dark">
+          <Typography variant="body2" mb={1} color="text.primary" sx={forceWhiteText(theme)}>
             Completion Status
           </Typography>
           <LinearProgress
             variant="determinate"
             value={completion}
-            sx={{ height: 8, borderRadius: 5 }}
+            sx={{ height: 8, borderRadius: 5, background: 'var(--appbar-bg, ' + theme.palette.action.selected + ')', transition: 'background 0.3s' }}
           />
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="text.secondary" sx={forceWhiteText(theme)}>
             {completion}% Complete
           </Typography>
-        </Box>
+        </SectionCard>
 
         <Box
           sx={{
@@ -313,9 +445,12 @@ const InstallationForm = () => {
             bottom: 20,
             right: 20,
             zIndex: 999,
+            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
+            borderRadius: 8,
+            transition: 'box-shadow 0.3s',
           }}
         >
-          <Button variant="contained" size="large" onClick={handleSubmit}>
+          <Button variant="contained" size="large" onClick={handleSubmit} sx={{ fontWeight: 600, px: 4, py: 1.5, borderRadius: 3, transition: 'background 0.3s' }}>
             Submit Installation
           </Button>
         </Box>
@@ -324,11 +459,13 @@ const InstallationForm = () => {
           open={snackbar.open}
           autoHideDuration={3000}
           onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
           <Alert
             severity={snackbar.severity}
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', background: 'var(--card-bg, ' + theme.palette.background.paper + ')', color: 'var(--text-color, ' + theme.palette.text.primary + ')', borderRadius: 2, boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)', border: '1px solid var(--border-color, ' + theme.palette.divider + ')' }}
             onClose={() => setSnackbar({ ...snackbar, open: false })}
+            variant="filled"
           >
             {snackbar.message}
           </Alert>

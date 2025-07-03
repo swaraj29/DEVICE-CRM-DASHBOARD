@@ -4,9 +4,9 @@
   align-items: center;
   height: 56px;
   padding: 0 16px;
-  background-color: #ffffff;
-  color: #121212;
-  border-bottom: 1px solid #000000;
+  background-color: var(--appbar-bg);
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .left {

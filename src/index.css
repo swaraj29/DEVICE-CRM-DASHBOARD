@@ -1,25 +1,68 @@
-/* :root {
+:root {
   --bg-color: #ffffff;
   --text-color: #121212;
   --appbar-bg: #ffffff;
   --border-color: #000;
   --card-bg: #f9f9f9;
+  --td-color: #1f2937;
 }
 
 [data-theme='dark'] {
   --bg-color: #121212;
   --text-color: #ffffff;
-  --appbar-bg: #1e1e1e;
+  --appbar-bg: #000000;
   --border-color: #fff;
-  --card-bg: #1a1a1a;
+  --card-bg: #222; /* Stronger contrast for cards in dark mode */
+  --td-color-dark: #fff;
+}
+
+/* Global utility for white text in dark mode for cards/sections */
+.card-white-text-dark {
+  color: var(--text-color);
+}
+[data-theme='dark'] .card-white-text-dark {
+  color: #fff !important;
+}
+
+/* Force all text, labels, inputs, and helper text to white in dark mode for .card-white-text-dark */
+[data-theme='dark'] .card-white-text-dark,
+[data-theme='dark'] .card-white-text-dark *,
+[data-theme='dark'] .card-white-text-dark .MuiInputBase-input,
+[data-theme='dark'] .card-white-text-dark .MuiInputLabel-root,
+[data-theme='dark'] .card-white-text-dark .MuiFormHelperText-root,
+[data-theme='dark'] .card-white-text-dark .MuiTypography-root,
+[data-theme='dark'] .card-white-text-dark .MuiButtonBase-root,
+[data-theme='dark'] .card-white-text-dark .MuiButton-label,
+[data-theme='dark'] .MuiMenu-paper.card-white-text-dark,
+[data-theme='dark'] .MuiMenuItem-root.card-white-text-dark {
+  color: #fff !important;
+  border-color: #fff !important;
+}
+[data-theme='dark'] .card-white-text-dark .MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+[data-theme='dark'] .card-white-text-dark .MuiInputLabel-root {
+  color: #fff !important;
+}
+[data-theme='dark'] .card-white-text-dark .MuiFormHelperText-root {
+  color: #fff !important;
+}
+[data-theme='dark'] .card-white-text-dark .MuiSvgIcon-root {
+  color: #fff !important;
+}
+[data-theme='dark'] .MuiMenu-paper.card-white-text-dark {
+  background: #222 !important;
+}
+[data-theme='dark'] .MuiMenuItem-root.card-white-text-dark {
+  background: #222 !important;
 }
 
 * {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.35s cubic-bezier(.4,0,.2,1), color 0.35s cubic-bezier(.4,0,.2,1), border-color 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.35s cubic-bezier(.4,0,.2,1);
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: 'Inter', sans-serif;
-} */
+}
