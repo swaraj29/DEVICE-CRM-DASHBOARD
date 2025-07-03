@@ -1,0 +1,25 @@
+/* :root {
+  --bg-color: #ffffff;
+  --text-color: #121212;
+  --appbar-bg: #ffffff;
+  --border-color: #000;
+  --card-bg: #f9f9f9;
+}
+
+[data-theme='dark'] {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --appbar-bg: #1e1e1e;
+  --border-color: #fff;
+  --card-bg: #1a1a1a;
+}
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+} */

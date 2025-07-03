@@ -1,0 +1,224 @@
+.contract-container {
+  // Base container styles
+  padding: 32px 24px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  color: #1c1c1e;
+  background-color: #ffffff;
+  margin-left: 108px;
+
+  // 🔁 Responsive adjustments for padding and margin
+  @media (max-width: 640px) {
+    // Mobile
+    padding: 16px 12px;
+    margin-left: -12px;
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    // Tablet
+    padding: 24px 16px;
+    margin-left: 80px;
+  }
+
+  @media (min-width: 1280px) {
+    // Desktop XL
+    padding: 40px 32px;
+    margin-left: 108px;
+  }
+
+  .heading {
+    // Section heading
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 4px;
+
+    @media (max-width: 640px) {
+      font-size: 18px;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+      font-size: 22px;
+    }
+
+    @media (min-width: 1280px) {
+      font-size: 26px;
+    }
+  }
+
+  .subheading {
+    // Section subheading or description
+    font-size: 14px;
+    color: #6e6e73;
+    margin-bottom: 28px;
+
+    @media (max-width: 640px) {
+      font-size: 12px;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+      font-size: 13px;
+    }
+
+    @media (min-width: 1280px) {
+      font-size: 15px;
+    }
+  }
+
+  .section {
+    // Content block inside container
+    margin-bottom: 36px;
+
+    h6 {
+      // Section title inside a content block
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+
+      @media (max-width: 640px) {
+        font-size: 14px;
+      }
+
+      @media (min-width: 641px) and (max-width: 1024px) {
+        font-size: 15px;
+      }
+
+      @media (min-width: 1280px) {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .table-container {
+    // Wrapper for table with border and scroll
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+
+    // 📱 Mobile table stretch: allow wider view with left shift
+    @media (max-width: 640px) {
+      width: 160%;
+      margin-left: -60px;
+      margin-right: 0;
+    }
+
+    // 🖥️ Default layout for larger screens
+    @media (min-width: 641px) {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    table {
+      // Core table layout
+      width: 100%;
+      min-width: 700px; // Ensures horizontal scroll
+      border-collapse: collapse;
+
+      th,
+      td {
+        font-size: 14px;
+
+        @media (max-width: 640px) {
+          font-size: 12px;
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+          font-size: 13px;
+        }
+
+        @media (min-width: 1280px) {
+          font-size: 15px;
+        }
+      }
+
+      th {
+        // Table headers
+        background-color: #f9fafb;
+        font-weight: 600;
+        color: #374151;
+        height: 48px;
+        padding: 12px 16px;
+        text-align: left;
+      }
+
+      td {
+        // Table cells
+        color: #1f2937;
+        height: 56px;
+        padding: 12px 16px;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .link-cell {
+        // Clickable cell link (e.g., View Contract)
+        color: #3b82f6;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .chip {
+        // Small tag/label UI for statuses
+        font-size: 13px;
+        font-weight: 500;
+        height: 24px;
+        border-radius: 12px;
+        padding: 0 10px;
+        display: inline-flex;
+        align-items: center;
+
+        &.amc {
+          background-color: #eef2ff;
+          color: #4f46e5;
+        }
+
+        &.cmc {
+          background-color: #fef3c7;
+          color: #d97706;
+        }
+
+        &.active {
+          background-color: #dcfce7;
+          color: #15803d;
+        }
+
+        &.expiring-soon {
+          background-color: #fef2f2;
+          color: #b91c1c;
+        }
+      }
+    }
+  }
+
+  .export-button {
+    // Export button wrapper aligned to right
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+
+    @media (max-width: 640px) {
+      justify-content: center; // Center the button on small screens
+    }
+
+    button {
+      // Actual export button styles
+      text-transform: none;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      color: #1f2937;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: #f3f4f6;
+      }
+    }
+  }
+}

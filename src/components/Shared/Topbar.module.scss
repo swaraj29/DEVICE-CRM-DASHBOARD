@@ -1,0 +1,36 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  padding: 0 16px;
+  background-color: #ffffff;
+  color: #121212;
+  border-bottom: 1px solid #000000;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.mobileIcons {
+  display: none;
+  align-items: center;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
