@@ -32,7 +32,7 @@ const getDaysRemaining = (expiryDate) => {
 
 const AMCContracts = () => {
   const dispatch = useDispatch();
-  const { data, loading } = useSelector((state) => state.contracts);
+  const { data } = useSelector((state) => state.contracts);
 
   useEffect(() => {
     dispatch(fetchContracts());
@@ -49,6 +49,7 @@ const AMCContracts = () => {
         Manage and track device contracts, including AMC and CMC details.
       </Typography>
 
+      {/* Contract Overview */}
       <Box className="section">
         <Typography variant="h6">Contract Overview</Typography>
         <TableContainer component={Paper} className="table-container">
@@ -67,23 +68,21 @@ const AMCContracts = () => {
             <TableBody>
               {data.map((contract) => (
                 <TableRow key={contract.serialNumber}>
-                  <TableCell>{contract.deviceName}</TableCell>
-                  <TableCell className="link-cell">{contract.serialNumber}</TableCell>
-                  <TableCell>{contract.facility}</TableCell>
+                  <TableCell className="force-readable-text">{contract.deviceName}</TableCell>
+                  <TableCell className="link-cell force-readable-text">{contract.serialNumber}</TableCell>
+                  <TableCell className="force-readable-text">{contract.facility}</TableCell>
                   <TableCell>
                     <Chip
                       label={contract.contractType}
                       className={`chip ${contract.contractType.toLowerCase()}`}
                     />
                   </TableCell>
-                  <TableCell>{contract.startDate}</TableCell>
-                  <TableCell>{contract.expiryDate}</TableCell>
+                  <TableCell className="force-readable-text">{contract.startDate}</TableCell>
+                  <TableCell className="force-readable-text">{contract.expiryDate}</TableCell>
                   <TableCell>
                     <Chip
                       label={getStatus(contract.expiryDate)}
-                      className={`chip ${getStatus(contract.expiryDate)
-                        .toLowerCase()
-                        .replace(' ', '-')}`}
+                      className={`chip ${getStatus(contract.expiryDate).toLowerCase().replace(' ', '-')}`}
                     />
                   </TableCell>
                 </TableRow>
@@ -93,6 +92,7 @@ const AMCContracts = () => {
         </TableContainer>
       </Box>
 
+      {/* Upcoming Expiries */}
       <Box className="section">
         <Typography variant="h6">Upcoming Expiries</Typography>
         <TableContainer component={Paper} className="table-container">
@@ -110,17 +110,17 @@ const AMCContracts = () => {
             <TableBody>
               {upcomingExpiries.map((contract) => (
                 <TableRow key={contract.serialNumber}>
-                  <TableCell>{contract.deviceName}</TableCell>
-                  <TableCell className="link-cell">{contract.serialNumber}</TableCell>
-                  <TableCell>{contract.facility}</TableCell>
+                  <TableCell className="force-readable-text">{contract.deviceName}</TableCell>
+                  <TableCell className="link-cell force-readable-text">{contract.serialNumber}</TableCell>
+                  <TableCell className="force-readable-text">{contract.facility}</TableCell>
                   <TableCell>
                     <Chip
                       label={contract.contractType}
                       className={`chip ${contract.contractType.toLowerCase()}`}
                     />
                   </TableCell>
-                  <TableCell>{contract.expiryDate}</TableCell>
-                  <TableCell>{getDaysRemaining(contract.expiryDate)}</TableCell>
+                  <TableCell className="force-readable-text">{contract.expiryDate}</TableCell>
+                  <TableCell className="force-readable-text">{getDaysRemaining(contract.expiryDate)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -128,6 +128,7 @@ const AMCContracts = () => {
         </TableContainer>
       </Box>
 
+      {/* Export */}
       <Box className="export-button">
         <Button variant="outlined" onClick={() => exportContractsToCSV(data)}>
           Export Report

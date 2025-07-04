@@ -28,7 +28,8 @@
 .mobileIcons {
   display: none;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
+  margin-right: 42px;
 
   @media (max-width: 768px) {
     display: flex;

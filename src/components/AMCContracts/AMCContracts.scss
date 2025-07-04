@@ -1,34 +1,39 @@
 .contract-container {
-  // Base container styles
   padding: 32px 24px;
   width: 100%;
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
-  color: var(--container-text);
-  background-color: var(--container-bg);
+  background-color: var(--card-bg);
+  color: var(--text-color);
   margin-left: 108px;
 
-  // 🔁 Responsive adjustments for padding and margin
   @media (max-width: 640px) {
-    // Mobile
     padding: 16px 12px;
     margin-left: -12px;
   }
 
   @media (min-width: 641px) and (max-width: 1024px) {
-    // Tablet
     padding: 24px 16px;
     margin-left: 80px;
   }
 
   @media (min-width: 1280px) {
-    // Desktop XL
     padding: 40px 32px;
     margin-left: 108px;
   }
 
+  // Force correct theme
+  [data-theme='light'] & {
+    color: var(--text-color) !important;
+    background-color: var(--card-bg) !important;
+  }
+
+  [data-theme='dark'] & {
+    color: #fff !important;
+    background-color: var(--card-bg) !important;
+  }
+
   .heading {
-    // Section heading
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 4px;
@@ -47,10 +52,17 @@
   }
 
   .subheading {
-    // Section subheading or description
     font-size: 14px;
     color: var(--subheading-text, #6e6e73);
     margin-bottom: 28px;
+
+    [data-theme='dark'] & {
+      color: var(--subheading-text, #cccccc) !important;
+    }
+
+    [data-theme='light'] & {
+      color: var(--subheading-text, #6e6e73) !important;
+    }
 
     @media (max-width: 640px) {
       font-size: 12px;
@@ -66,11 +78,9 @@
   }
 
   .section {
-    // Content block inside container
     margin-bottom: 36px;
 
     h6 {
-      // Section title inside a content block
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 12px;
@@ -90,32 +100,26 @@
   }
 
   .table-container {
-    // Wrapper for table with border and scroll
-    border: 1px solid var(--table-border, #000);
+    border: 1px solid var(--border-color);
     border-radius: 24px;
     overflow-x: auto;
     box-shadow: var(--table-shadow);
     white-space: nowrap;
-    background: var(--table-bg, transparent);
+    background: var(--card-bg);
 
-    // 📱 Mobile table stretch: allow wider view with left shift
     @media (max-width: 640px) {
       width: 160%;
       margin-left: -60px;
-      margin-right: 0;
     }
 
-    // 🖥️ Default layout for larger screens
     @media (min-width: 641px) {
       width: 100%;
       margin-left: 0;
-      margin-right: 0;
     }
 
     table {
-      // Core table layout
       width: 100%;
-      min-width: 700px; // Ensures horizontal scroll
+      min-width: 700px;
       border-collapse: collapse;
 
       th,
@@ -136,29 +140,42 @@
       }
 
       th {
-        // Table headers
         background-color: var(--th-bg, #f9fafb);
         color: var(--th-color, #374151);
         height: 48px;
         padding: 12px 16px;
         text-align: left;
+
+        [data-theme='dark'] & {
+          background-color: var(--th-bg, #333) !important;
+          color: var(--th-color, #fff) !important;
+        }
+
+        [data-theme='light'] & {
+          background-color: var(--th-bg, #f9fafb) !important;
+          color: var(--th-color, #374151) !important;
+        }
       }
 
       td {
-        // Table cells
-        color: var(--td-color);
+        color: var(--td-color, #1f2937);
         height: 56px;
         padding: 12px 16px;
-        border-top: 1px solid var(--table-border, #e5e7eb);
-        transition: color 0.35s cubic-bezier(.4,0,.2,1);
+        border-top: 1px solid var(--border-color);
+        transition: color 0.35s;
 
-        @media (prefers-color-scheme: dark) {
-          color: var(--td-color-dark);
+        [data-theme='dark'] & {
+          color: var(--td-color-dark, #fff) !important;
+          border-color: var(--border-color, #444) !important;
+        }
+
+        [data-theme='light'] & {
+          color: var(--td-color, #1f2937) !important;
+          border-color: var(--border-color, #000) !important;
         }
       }
 
       .link-cell {
-        // Clickable cell link (e.g., View Contract)
         color: var(--link-cell, #3b82f6);
         font-weight: 500;
         cursor: pointer;
@@ -166,7 +183,6 @@
       }
 
       .chip {
-        // Small tag/label UI for statuses
         font-size: 13px;
         font-weight: 500;
         height: 24px;
@@ -199,17 +215,15 @@
   }
 
   .export-button {
-    // Export button wrapper aligned to right
     display: flex;
     justify-content: flex-end;
     margin-top: 16px;
 
     @media (max-width: 640px) {
-      justify-content: center; // Center the button on small screens
+      justify-content: center;
     }
 
     button {
-      // Actual export button styles
       text-transform: none;
       font-weight: 500;
       border-radius: 8px;
@@ -223,6 +237,18 @@
 
       &:hover {
         background-color: var(--export-btn-hover-bg, #f3f4f6);
+      }
+
+      [data-theme='dark'] & {
+        color: var(--export-btn-color, #ffffff) !important;
+        background-color: var(--export-btn-bg, #222) !important;
+        border-color: var(--export-btn-border, #fff) !important;
+      }
+
+      [data-theme='light'] & {
+        color: var(--export-btn-color, #1f2937) !important;
+        background-color: var(--export-btn-bg, #ffffff) !important;
+        border-color: var(--export-btn-border, #d1d5db) !important;
       }
     }
   }

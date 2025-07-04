@@ -401,9 +401,23 @@ const ServiceVisitForm = () => {
           </Box>
         </Box>
 
-        <SaveButton variant="contained" size="large" onClick={handleSubmit}>
-          Save Visit
-        </SaveButton>
+        {/* Save Visit button moved to the bottom of the form, not fixed */}
+        <Box mt={4} display="flex" justifyContent="flex-end">
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleSubmit}
+            sx={{
+              fontWeight: 600,
+              px: 4,
+              py: 1.5,
+              borderRadius: 3,
+              transition: 'background 0.3s',
+            }}
+          >
+            Save Visit
+          </Button>
+        </Box>
 
         <Snackbar
           open={snackbar.open}

@@ -1,22 +1,98 @@
+/* ================================
+   🌗 Global Theme Variables
+================================ */
+
 :root {
   --bg-color: #ffffff;
   --text-color: #121212;
   --appbar-bg: #ffffff;
-  --border-color: #000;
+  --border-color: #000000;
   --card-bg: #f9f9f9;
+  --th-color: #374151;
+  --th-bg: #f9fafb;
   --td-color: #1f2937;
+
+  --link-cell: #3b82f6;
+
+  --chip-amc-bg: #eef2ff;
+  --chip-amc-color: #4f46e5;
+
+  --chip-cmc-bg: #fef3c7;
+  --chip-cmc-color: #d97706;
+
+  --chip-active-bg: #dcfce7;
+  --chip-active-color: #15803d;
+
+  --chip-expiring-bg: #fef2f2;
+  --chip-expiring-color: #b91c1c;
+
+  --export-btn-bg: #ffffff;
+  --export-btn-border: #d1d5db;
+  --export-btn-color: #1f2937;
+  --export-btn-hover-bg: #f3f4f6;
+
+  --table-border: #e5e7eb;
+  --table-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
+  --subheading-text: #6e6e73;
 }
 
 [data-theme='dark'] {
   --bg-color: #121212;
   --text-color: #ffffff;
   --appbar-bg: #000000;
-  --border-color: #fff;
-  --card-bg: #222; /* Stronger contrast for cards in dark mode */
-  --td-color-dark: #fff;
+  --border-color: #ffffff;
+  --card-bg: #222222;
+  --th-color: #ffffff;
+  --th-bg: #333333;
+  --td-color-dark: #ffffff;
+
+  --link-cell: #60a5fa;
+
+  --chip-amc-bg: #3730a3;
+  --chip-amc-color: #c7d2fe;
+
+  --chip-cmc-bg: #78350f;
+  --chip-cmc-color: #fde68a;
+
+  --chip-active-bg: #166534;
+  --chip-active-color: #dcfce7;
+
+  --chip-expiring-bg: #7f1d1d;
+  --chip-expiring-color: #fecaca;
+
+  --export-btn-bg: #222222;
+  --export-btn-border: #ffffff;
+  --export-btn-color: #ffffff;
+  --export-btn-hover-bg: #333333;
+
+  --table-border: #444444;
+  --table-shadow: 0px 2px 6px rgba(255, 255, 255, 0.1);
+  --subheading-text: #cccccc;
 }
 
-/* Global utility for white text in dark mode for cards/sections */
+/* ================================
+   🧼 Global Base Styles
+================================ */
+
+* {
+  transition: background-color 0.35s cubic-bezier(.4,0,.2,1),
+              color 0.35s cubic-bezier(.4,0,.2,1),
+              border-color 0.35s cubic-bezier(.4,0,.2,1),
+              box-shadow 0.35s cubic-bezier(.4,0,.2,1);
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+}
+
+/* ================================
+   🎨 Dark Mode Text Override
+   For Cards / Sections
+================================ */
+
 .card-white-text-dark {
   color: var(--text-color);
 }
@@ -24,7 +100,7 @@
   color: #fff !important;
 }
 
-/* Force all text, labels, inputs, and helper text to white in dark mode for .card-white-text-dark */
+/* Override Material UI form components (white text in dark) */
 [data-theme='dark'] .card-white-text-dark,
 [data-theme='dark'] .card-white-text-dark *,
 [data-theme='dark'] .card-white-text-dark .MuiInputBase-input,
@@ -38,31 +114,18 @@
   color: #fff !important;
   border-color: #fff !important;
 }
+
 [data-theme='dark'] .card-white-text-dark .MuiOutlinedInput-notchedOutline {
   border-color: #fff !important;
 }
-[data-theme='dark'] .card-white-text-dark .MuiInputLabel-root {
-  color: #fff !important;
-}
-[data-theme='dark'] .card-white-text-dark .MuiFormHelperText-root {
-  color: #fff !important;
-}
+
 [data-theme='dark'] .card-white-text-dark .MuiSvgIcon-root {
   color: #fff !important;
 }
+
 [data-theme='dark'] .MuiMenu-paper.card-white-text-dark {
   background: #222 !important;
 }
 [data-theme='dark'] .MuiMenuItem-root.card-white-text-dark {
   background: #222 !important;
-}
-
-* {
-  transition: background-color 0.35s cubic-bezier(.4,0,.2,1), color 0.35s cubic-bezier(.4,0,.2,1), border-color 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.35s cubic-bezier(.4,0,.2,1);
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: 'Inter', sans-serif;
 }

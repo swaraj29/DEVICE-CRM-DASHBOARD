@@ -14,6 +14,7 @@ import {
   MenuItem,
   Divider,
 } from '@mui/material';
+import { ReportProblem } from '@mui/icons-material';
 import './Alerts.scss';
 
 const Alerts = () => {
@@ -65,7 +66,30 @@ const Alerts = () => {
 
   return (
     <Box className="alerts-container">
-      <Typography variant="h4" className="title">Alerts & Photo Logs</Typography>
+      {/* Header Section with stats */}
+      <Box className="header-section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+        <Box className="title-block" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <ReportProblem style={{ fontSize: 40, color: '#1976d2', marginRight: 12 }} />
+          <Box>
+            <Typography variant="h4" className="title">
+              Alerts & Photo Logs
+            </Typography>
+            <Typography variant="subtitle1" className="subtitle" style={{ color: 'var(--text-color, #666)' }}>
+              Report device issues and view maintenance logs
+            </Typography>
+          </Box>
+        </Box>
+        <Box style={{ display: 'flex', gap: 16 }}>
+          <Paper elevation={2} className="stat-card" style={{ padding: '12px 24px', borderRadius: 12, minWidth: 120, textAlign: 'center', background: 'var(--card-bg, #fafafa)' }}>
+            <Typography variant="h6" style={{ fontWeight: 700, color: '#1976d2' }}>{alerts.length}</Typography>
+            <Typography variant="body2" style={{ color: 'var(--text-color, #666)' }}>Total Alerts</Typography>
+          </Paper>
+          <Paper elevation={2} className="stat-card" style={{ padding: '12px 24px', borderRadius: 12, minWidth: 120, textAlign: 'center', background: 'var(--card-bg, #fafafa)' }}>
+            <Typography variant="h6" style={{ fontWeight: 700, color: '#43a047' }}>{devices.length}</Typography>
+            <Typography variant="body2" style={{ color: 'var(--text-color, #666)' }}>Active Devices</Typography>
+          </Paper>
+        </Box>
+      </Box>
 
       <Paper className="form-section">
         <Typography variant="h6" gutterBottom>📩 Report a Device Issue</Typography>
@@ -97,17 +121,21 @@ const Alerts = () => {
             rows={3}
           />
 
-          <Button variant="outlined" component="label">
-            📷 Upload Photo
-            <input hidden type="file" accept="image/*" onChange={handlePhotoUpload} />
-          </Button>
-
-          {formData.photo && (
-            <Box className="preview-img">
-              <Typography variant="body2" sx={{ mt: 1 }}>Preview:</Typography>
-              <img src={formData.photo} alt="Preview" className="alert-photo" />
-            </Box>
-          )}
+          <Box className="upload-photo-block">
+            <Button variant="outlined" component="label" className="upload-photo-btn">
+              <span className="upload-photo-icon">📷</span> Upload Photo
+              <input hidden type="file" accept="image/*" onChange={handlePhotoUpload} />
+            </Button>
+            {formData.photo && (
+              <Box className="preview-img">
+                <Typography variant="body2" sx={{ mt: 1 }}>Preview:</Typography>
+                <img src={formData.photo} alt="Preview" className="alert-photo" />
+                <Button size="small" color="error" className="remove-photo-btn" onClick={() => setFormData(prev => ({ ...prev, photo: '' }))}>
+                  Remove
+                </Button>
+              </Box>
+            )}
+          </Box>
 
           <Button type="submit" variant="contained" color="primary" className="submit-btn">
             Submit Alert

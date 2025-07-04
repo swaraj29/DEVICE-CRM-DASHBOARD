@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Drawer,
   List,
@@ -6,9 +6,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  IconButton,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import BuildIcon from '@mui/icons-material/Build';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
@@ -34,9 +32,12 @@ const Sidebar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  // ✅ Listen to toggle from Topbar (via custom event)
+  useEffect(() => {
+    const toggleHandler = () => setMobileOpen(prev => !prev);
+    window.addEventListener('toggleSidebar', toggleHandler);
+    return () => window.removeEventListener('toggleSidebar', toggleHandler);
+  }, []);
 
   const drawerContent = (
     <List sx={{ mt: 8 }}>
@@ -57,10 +58,13 @@ const Sidebar = () => {
               },
             }}
           >
-            <ListItemIcon sx={{ color: 'var(--text-color)', minWidth: 40 }}>{icon}</ListItemIcon>
+            <ListItemIcon sx={{ color: 'var(--text-color)', minWidth: 40 }}>
+              {icon}
+            </ListItemIcon>
             <ListItemText
               primary={label}
               primaryTypographyProps={{ fontSize: 14 }}
+              sx={{ color: 'var(--text-color)' }}
             />
           </ListItemButton>
         </ListItem>
@@ -69,55 +73,27 @@ const Sidebar = () => {
   );
 
   return (
-    <>
-      {/* ✅ Hamburger Icon (Mobile only, aligned right) */}
-      {isMobile && (
-        <IconButton
-          onClick={handleDrawerToggle}
-          sx={{
-            position: 'fixed',
-            top: 12,
-            right: 40, // changed from left to right
-            zIndex: (theme) => theme.zIndex.drawer + 2,
-            backgroundColor: 'var(--appbar-bg)',
-            border: '1px solid var(--border-color)',
-            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
-            '&:hover': {
-              backgroundColor: 'var(--card-bg)',
-            },
-            width: 40,
-            height: 40,
-          }}
-        >
-          <MenuIcon sx={{ color: 'var(--text-color)' }} />
-        </IconButton>
-      )}
-
-      {/* ✅ Sidebar Drawer */}
-      <Drawer
-        anchor={isMobile ? 'right' : 'left'} // open from right on mobile
-        variant={isMobile ? 'temporary' : 'permanent'}
-        open={isMobile ? mobileOpen : true}
-        onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true,
-        }}
-        sx={{
+    <Drawer
+      anchor={isMobile ? 'right' : 'left'}
+      variant={isMobile ? 'temporary' : 'permanent'}
+      open={isMobile ? mobileOpen : true}
+      onClose={() => setMobileOpen(false)}
+      ModalProps={{ keepMounted: true }}
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
           width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            backgroundColor: 'var(--appbar-bg)',
-            color: 'var(--text-color)',
-            borderRight: isMobile ? 'none' : '1px solid var(--border-color)',
-            borderLeft: isMobile ? '1px solid var(--border-color)' : 'none',
-            boxSizing: 'border-box',
-          },
-        }}
-      >
-        {drawerContent}
-      </Drawer>
-    </>
+          backgroundColor: 'var(--appbar-bg)',
+          color: 'var(--text-color)',
+          borderRight: isMobile ? 'none' : '1px solid var(--border-color)',
+          borderLeft: isMobile ? '1px solid var(--border-color)' : 'none',
+          boxSizing: 'border-box',
+        },
+      }}
+    >
+      {drawerContent}
+    </Drawer>
   );
 };
 

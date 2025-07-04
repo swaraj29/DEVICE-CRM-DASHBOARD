@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -23,6 +23,7 @@ import dayjs from 'dayjs';
 import { useDispatch } from 'react-redux';
 import { addInstallation } from '../../redux/slices/installationSlice';
 import { updateDevice } from '../../redux/slices/deviceSlice';
+import { fetchDevices } from '../../api/devices';
 
 // Themed components for consistent palette/variable usage
 const ThemedTextField = styled(TextField)(({ theme }) => ({
@@ -116,6 +117,25 @@ const InstallationForm = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Device list state
+  const [devices, setDevices] = useState([]);
+  const [loadingDevices, setLoadingDevices] = useState(false);
+
+  useEffect(() => {
+    const getDevices = async () => {
+      setLoadingDevices(true);
+      try {
+        const res = await fetchDevices();
+        setDevices(res.data || []);
+      } catch (err) {
+        setDevices([]);
+      } finally {
+        setLoadingDevices(false);
+      }
+    };
+    getDevices();
+  }, []);
 
   const [form, setForm] = useState({
     serialNumber: '',
@@ -233,7 +253,7 @@ const InstallationForm = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box maxWidth="md" mx="auto" px={isMobile ? 1 : 3} py={4} pb={10}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom color="text.primary">
+        <Typography variant="h5" fontWeight="bold" gutterBottom className="card-white-text-dark">
           New Installation
         </Typography>
 
@@ -253,15 +273,43 @@ const InstallationForm = () => {
                 className="card-white-text-dark"
                 fullWidth
                 required
+                select
                 label="Device Serial Number"
                 value={form.serialNumber}
                 onChange={handleChange('serialNumber')}
                 autoComplete="off"
-                helperText="Required. Unique device identifier."
+                helperText={loadingDevices ? 'Loading devices...' : 'Required. Unique device identifier.'}
                 aria-label="Device Serial Number"
                 InputLabelProps={{ required: false, style: forceWhiteText(theme) }}
                 sx={forceWhiteText(theme)}
-              />
+                SelectProps={{
+                  MenuProps: {
+                    PaperProps: {
+                      className: 'card-white-text-dark',
+                      sx: {
+                        backgroundColor: 'var(--card-bg, #222)',
+                        color: '#fff',
+                      },
+                    },
+                  },
+                }}
+                disabled={loadingDevices || devices.length === 0}
+              >
+                {devices.length === 0 && !loadingDevices ? (
+                  <MenuItem value="" disabled>No devices found</MenuItem>
+                ) : (
+                  devices.map((device) => (
+                    <MenuItem
+                      key={device.id || device.serialNumber || device._id}
+                      value={device.id || device.serialNumber || device._id}
+                      className="card-white-text-dark"
+                      style={{ color: theme.palette.mode === 'dark' ? '#fff' : 'var(--text-color, #121212)', background: 'var(--card-bg, #222)' }}
+                    >
+                      {device.serialNumber || device.id || device._id}
+                    </MenuItem>
+                  ))
+                )}
+              </ThemedTextField>
             </Grid>
             <Grid item xs={12} sm={6}>
               <ThemedTextField
@@ -439,17 +487,8 @@ const InstallationForm = () => {
           </Typography>
         </SectionCard>
 
-        <Box
-          sx={{
-            position: 'fixed',
-            bottom: 20,
-            right: 20,
-            zIndex: 999,
-            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
-            borderRadius: 8,
-            transition: 'box-shadow 0.3s',
-          }}
-        >
+        {/* Move the submit button to the bottom of the form, not fixed */}
+        <Box mt={4} display="flex" justifyContent="flex-end">
           <Button variant="contained" size="large" onClick={handleSubmit} sx={{ fontWeight: 600, px: 4, py: 1.5, borderRadius: 3, transition: 'background 0.3s' }}>
             Submit Installation
           </Button>

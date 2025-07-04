@@ -35,6 +35,21 @@
     }
   }
 
+  .title-block {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+
+    @media (max-width: 599px) {
+      text-align: left;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+  }
+
   .form-section {
     padding: 1.5rem;
     border-radius: 12px;
@@ -53,6 +68,8 @@
 
     @media (max-width: 599px) {
       padding: 1rem;
+      width: 80vw;
+      margin-left: -42px;
     }
   }
 
@@ -158,6 +175,93 @@
 
     @media (max-width: 599px) {
       padding: 0.75rem;
+    }
+  }
+a
+  .header-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .header-icon {
+    font-size: 2.5rem;
+    color: #1976d2;
+    margin-right: 0.75rem;
+  }
+  .stats-cards {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    min-width: 110px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    background: var(--card-bg, #fafafa);
+    box-shadow: 0 2px 8px 0 rgba(25, 118, 210, 0.07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .stat-number {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #1976d2;
+    margin-bottom: 0.2rem;
+  }
+  .stat-label {
+    color: var(--text-color, #666);
+    font-size: 0.95rem;
+  }
+  @media (max-width: 900px) {
+    .header-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    .stats-cards {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+  @media (max-width: 599px) {
+    .header-section {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+    .header-content {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .stats-cards {
+      flex-direction: row;
+      gap: 0.5rem;
+      width: 100%;
+      justify-content: flex-start;
+    }
+    .stat-card {
+      min-width: 90px;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.95rem;
+    }
+    .stat-number {
+      font-size: 1.1rem;
+    }
+    .stat-label {
+      font-size: 0.85rem;
     }
   }
 }
