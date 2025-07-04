@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAlerts } from "../../redux/slices/alertSlice";
 import { fetchDevices } from "../../redux/slices/deviceSlice";
-import { addAlert } from "../../api/alerts";
+import { addAlert, updateAlert, deleteAlert } from "../../api/alerts";
+import { removeAlertPhoto, deleteAlertThunk } from "../../redux/slices/alertSlice";
 import {
   Box,
   Typography,
@@ -61,6 +62,24 @@ const Alerts = () => {
       setFormData({ deviceId: "", issue: "", photo: "" });
     } catch (err) {
       console.error("Failed to add alert:", err);
+    }
+  };
+
+  const handleRemovePhoto = async (alertId) => {
+    try {
+      await dispatch(removeAlertPhoto(alertId)).unwrap();
+      // Optionally, show a success message or refresh alerts
+    } catch (err) {
+      alert("Failed to remove photo: " + (err?.message || err));
+    }
+  };
+
+  const handleDeleteAlert = async (alertId) => {
+    if (!window.confirm("Are you sure you want to delete this alert?")) return;
+    try {
+      await dispatch(deleteAlertThunk(alertId)).unwrap();
+    } catch (err) {
+      alert("Failed to delete alert: " + (err?.message || err));
     }
   };
 
@@ -251,12 +270,32 @@ const Alerts = () => {
                     <strong>Issue:</strong> {alert.issue}
                   </Typography>
                   {alert.photo && (
-                    <img
-                      src={alert.photo}
-                      alt="Alert"
-                      className="alert-photo"
-                    />
+                    <Box sx={{ position: "relative", mb: 1 }}>
+                      <img
+                        src={alert.photo}
+                        alt="Alert"
+                        className="alert-photo"
+                      />
+                      <Button
+                        size="small"
+                        color="error"
+                        variant="outlined"
+                        sx={{ mt: 1, mr: 1 }}
+                        onClick={() => handleRemovePhoto(alert.id)}
+                      >
+                        Remove Photo
+                      </Button>
+                    </Box>
                   )}
+                  <Button
+                    size="small"
+                    color="error"
+                    variant="contained"
+                    sx={{ mt: 1 }}
+                    onClick={() => handleDeleteAlert(alert.id)}
+                  >
+                    Delete Alert
+                  </Button>
                 </Paper>
               </Grid>
             ))

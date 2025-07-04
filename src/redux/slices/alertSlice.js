@@ -9,6 +9,30 @@ export const fetchAlerts = createAsyncThunk(
   }
 );
 
+export const removeAlertPhoto = createAsyncThunk(
+  'alerts/removeAlertPhoto',
+  async (alertId, { rejectWithValue }) => {
+    try {
+      await alertAPI.updateAlert(alertId, { photo: '' });
+      return alertId;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+export const deleteAlertThunk = createAsyncThunk(
+  'alerts/deleteAlert',
+  async (alertId, { rejectWithValue }) => {
+    try {
+      await alertAPI.deleteAlert(alertId);
+      return alertId;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
 const alertSlice = createSlice({
   name: 'alerts',
   initialState: {
@@ -30,6 +54,14 @@ const alertSlice = createSlice({
       .addCase(fetchAlerts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(removeAlertPhoto.fulfilled, (state, action) => {
+        // Remove photo from alert in state
+        const alert = state.data.find(a => a.id === action.payload);
+        if (alert) alert.photo = '';
+      })
+      .addCase(deleteAlertThunk.fulfilled, (state, action) => {
+        state.data = state.data.filter(a => a.id !== action.payload);
       });
   },
 });
