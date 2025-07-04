@@ -27,25 +27,30 @@ Backend: [https://device-crm-api.onrender.com](https://device-crm-api.onrender.c
 - **Device Inventory Dashboard:**  
   View all devices with type, ID, facility, status (Online/Offline/Maintenance), battery %, last service/installation date, and AMC/CMC status.
 - **Installation & Training Module:**  
-  Log new installations, upload unboxing photos, complete checklists, submit training forms, and track completion status.
+  Log new installations, upload unboxing photos, complete checklists, submit training forms, and track completion status. Modularized form sections for maintainability and extensibility.
 - **Service Visit Logs:**  
-  Log field visits with notes, date, responsible engineer, purpose (Preventive/Breakdown), and attachments (photos, PDFs).
+  Log field visits with notes, date, responsible engineer, purpose (Preventive/Breakdown), and attachments (photos, PDFs). Robust validation for all required fields.
 - **AMC/CMC Tracker:**  
   Track devices with AMC/CMC contract details, view upcoming expiries, and export reports to CSV.
 - **Alerts & Photo Logs:**  
   Upload photos of device condition and handle alerts for issues during installation or maintenance.
 - **Theme Switcher:**  
-  Seamless light/dark mode with smooth transitions and accessible color schemes.
+  Seamless light/dark mode with smooth transitions and accessible color schemes. All form fields, section headings, and popups are styled for both themes.
 - **Export Reports:**  
   Export AMC/CMC and device data to CSV.
+- **Form Validation:**  
+  All major forms include robust validation (required fields, date checks, image upload checks, etc.) with user feedback via Snackbar.
+- **Extensible Modular Codebase:**  
+  Forms are split into modular sections (e.g., InstallationDataSection, ImageUploadSection, TrainingInfoSection, FormActions) for easy maintenance and extension.
 
 ---
 
 ## Tech Stack
 
-- **Frontend:** ReactJS, Redux, Material UI, SCSS Modules
+- **Frontend:** ReactJS, Redux Toolkit, Material UI, SCSS Modules
 - **State Management:** Redux Toolkit
 - **Styling:** Material UI + CSS Variables for theme support, SCSS modules
+- **Validation:** Custom logic (with option to extend using Yup/React Hook Form)
 - **Mock API:** json-server or localStorage (for demo/testing)
 - **Build Tool:** Vite
 
@@ -95,29 +100,24 @@ npm run build
 │   │   └── react.svg
 │   ├── components/
 │   │   ├── AMCContracts/
-│   │   │   ├── AMCContracts.jsx
-│   │   │   └── AMCContracts.scss
 │   │   ├── Alerts/
-│   │   │   ├── Alerts.jsx
-│   │   │   └── Alerts.scss
 │   │   ├── Dashboard/
-│   │   │   └── DeviceTable.jsx
 │   │   ├── Installations/
-│   │   │   └── InstallationForm.jsx
+│   │   │   ├── InstallationDataSection.jsx
+│   │   │   ├── ImageUploadSection.jsx
+│   │   │   ├── TrainingInfoSection.jsx
+│   │   │   └── FormActions.jsx
 │   │   ├── Services/
-│   │   │   └── ServiceVisitForm.jsx
+│   │   │   ├── ServiceDataSection.jsx
+│   │   │   ├── AttachmentUploadSection.jsx
+│   │   │   └── FormActions.jsx
 │   │   └── Shared/
-│   │       ├── Sidebar.jsx
-│   │       ├── Topbar.jsx
-│   │       └── Topbar.module.scss
 │   ├── containers/
 │   │   ├── AMCContracts.jsx
 │   │   ├── Alerts.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── Installations.jsx
 │   │   └── Services.jsx
-│   ├── context/
-│   │   └── ThemeContext.jsx
 │   ├── redux/
 │   │   ├── store.js
 │   │   └── slices/
@@ -142,7 +142,8 @@ npm run build
 ├── vite.config.js
 ```
 
-- `src/components/` — Modular, reusable UI components (forms, tables, cards, etc.)
+- `src/components/Installations/` — Modularized installation form sections (data, image upload, training, actions)
+- `src/components/Services/` — Modularized service visit form sections
 - `src/containers/` — Page-level containers for each module
 - `src/redux/` — Redux store and slices for device, facility, service, contract, and alert data
 - `src/api/` — API utilities for CRUD operations (can be swapped for real or mock backend)
@@ -154,8 +155,8 @@ npm run build
 
 ## Key Modules
 1. **Device Inventory Dashboard**
-2. **Installation & Training**
-3. **Service Visit Logs**
+2. **Installation & Training** (with modular, validated forms)
+3. **Service Visit Logs** (with modular, validated forms)
 4. **AMC/CMC Tracker**
 5. **Alerts & Photo Logs**
 
@@ -163,16 +164,38 @@ Each module supports full CRUD operations, file uploads, and is fully responsive
 
 ---
 
-## Theming
+## Theming & Accessibility
 - Uses CSS variables, SCSS modules, and Material UI theme palette for seamless light/dark switching.
-- All major UI elements are accessible and visually consistent in both themes.
+- All major UI elements, form fields, section headings, and popups are styled for both themes.
 - Fully mobile responsive: works great on phones, tablets, and desktops.
+- Accessible color contrast and keyboard navigation.
+
+---
+
+## Validation & Extensibility
+- All forms include robust validation for required fields, dates, and uploads.
+- Validation logic is modular and can be extended (see `InstallationDataSection`, `ImageUploadSection`, etc.).
+- User feedback is provided via Snackbar for all validation errors and successes.
+- Easily extend forms by adding new sections/components and validation rules.
 
 ---
 
 ## Deployment
 - **Frontend:** Deployed on Vercel — [https://device-crm-dashboard.vercel.app/](https://device-crm-dashboard.vercel.app/)
 - **Backend:** [https://device-crm-api.onrender.com](https://device-crm-api.onrender.com)
+
+---
+
+## Mobile/Remote Testing with ngrok
+
+You can use [ngrok](https://ngrok.com/) to expose your local frontend or backend for testing on mobile devices or from other networks.
+
+- The Vite config (`vite.config.js`) is already set up to allow external access and whitelist your ngrok domain.
+- Start your frontend with `npm run dev`.
+- In a new terminal, run `ngrok http 5173` (for frontend) or `ngrok http 5000` (for backend).
+- Access the ngrok URL from your mobile device or share it for remote testing.
+
+This makes it easy to test your app on real devices or share with teammates for live feedback.
 
 ---
 

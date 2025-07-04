@@ -129,3 +129,11 @@ body {
 [data-theme='dark'] .MuiMenuItem-root.card-white-text-dark {
   background: #222 !important;
 }
+
+[data-theme='dark'] .MuiTypography-root[color="text.secondary"],
+[data-theme='dark'] .MuiTypography-root.MuiTypography-body1[color="text.secondary"],
+[data-theme='dark'] .MuiTypography-root.MuiTypography-body2[color="text.secondary"],
+[data-theme='dark'] .MuiTypography-root.MuiTypography-body1,
+[data-theme='dark'] .MuiTypography-root.MuiTypography-body2 {
+  color: #fff !important;
+}

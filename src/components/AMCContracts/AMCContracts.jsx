@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchContracts } from '../../redux/slices/contractSlice';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchContracts } from "../../redux/slices/contractSlice";
 import {
   Box,
   Typography,
@@ -12,34 +12,27 @@ import {
   TableHead,
   TableRow,
   Chip,
-  Button
-} from '@mui/material';
-import './AMCContracts.scss';
-import { exportContractsToCSV } from '../../utils/exportToCSV';
+  Button,
+} from "@mui/material";
+import "./AMCContracts.scss";
+import { exportContractsToCSV } from "../../utils/exportToCSV";
 
-const getStatus = (expiryDate) => {
-  const today = new Date();
-  const expiry = new Date(expiryDate);
-  const diff = (expiry - today) / (1000 * 60 * 60 * 24);
-  return diff <= 30 ? 'Expiring Soon' : 'Active';
-};
-
-const getDaysRemaining = (expiryDate) => {
-  const today = new Date();
-  const expiry = new Date(expiryDate);
-  return Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
-};
+const getStatus = (expiryDate) =>
+  (new Date(expiryDate) - new Date()) / 86400000 <= 30
+    ? "Expiring Soon"
+    : "Active";
+const getDaysRemaining = (expiryDate) =>
+  Math.ceil((new Date(expiryDate) - new Date()) / 86400000);
 
 const AMCContracts = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.contracts);
-
   useEffect(() => {
     dispatch(fetchContracts());
   }, [dispatch]);
-
-  const upcomingExpiries = data.filter((contract) => getDaysRemaining(contract.expiryDate) <= 90);
-
+  const upcomingExpiries = data.filter(
+    (c) => getDaysRemaining(c.expiryDate) <= 90
+  );
   return (
     <Box className="contract-container">
       <Typography variant="h4" className="heading">
@@ -48,8 +41,6 @@ const AMCContracts = () => {
       <Typography variant="body2" className="subheading">
         Manage and track device contracts, including AMC and CMC details.
       </Typography>
-
-      {/* Contract Overview */}
       <Box className="section">
         <Typography variant="h6">Contract Overview</Typography>
         <TableContainer component={Paper} className="table-container">
@@ -66,23 +57,35 @@ const AMCContracts = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((contract) => (
-                <TableRow key={contract.serialNumber}>
-                  <TableCell className="force-readable-text">{contract.deviceName}</TableCell>
-                  <TableCell className="link-cell force-readable-text">{contract.serialNumber}</TableCell>
-                  <TableCell className="force-readable-text">{contract.facility}</TableCell>
+              {data.map((c) => (
+                <TableRow key={c.serialNumber}>
+                  <TableCell className="force-readable-text">
+                    {c.deviceName}
+                  </TableCell>
+                  <TableCell className="link-cell force-readable-text">
+                    {c.serialNumber}
+                  </TableCell>
+                  <TableCell className="force-readable-text">
+                    {c.facility}
+                  </TableCell>
                   <TableCell>
                     <Chip
-                      label={contract.contractType}
-                      className={`chip ${contract.contractType.toLowerCase()}`}
+                      label={c.contractType}
+                      className={`chip ${c.contractType.toLowerCase()}`}
                     />
                   </TableCell>
-                  <TableCell className="force-readable-text">{contract.startDate}</TableCell>
-                  <TableCell className="force-readable-text">{contract.expiryDate}</TableCell>
+                  <TableCell className="force-readable-text">
+                    {c.startDate}
+                  </TableCell>
+                  <TableCell className="force-readable-text">
+                    {c.expiryDate}
+                  </TableCell>
                   <TableCell>
                     <Chip
-                      label={getStatus(contract.expiryDate)}
-                      className={`chip ${getStatus(contract.expiryDate).toLowerCase().replace(' ', '-')}`}
+                      label={getStatus(c.expiryDate)}
+                      className={`chip ${getStatus(c.expiryDate)
+                        .toLowerCase()
+                        .replace(" ", "-")}`}
                     />
                   </TableCell>
                 </TableRow>
@@ -91,8 +94,6 @@ const AMCContracts = () => {
           </Table>
         </TableContainer>
       </Box>
-
-      {/* Upcoming Expiries */}
       <Box className="section">
         <Typography variant="h6">Upcoming Expiries</Typography>
         <TableContainer component={Paper} className="table-container">
@@ -108,27 +109,35 @@ const AMCContracts = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {upcomingExpiries.map((contract) => (
-                <TableRow key={contract.serialNumber}>
-                  <TableCell className="force-readable-text">{contract.deviceName}</TableCell>
-                  <TableCell className="link-cell force-readable-text">{contract.serialNumber}</TableCell>
-                  <TableCell className="force-readable-text">{contract.facility}</TableCell>
+              {upcomingExpiries.map((c) => (
+                <TableRow key={c.serialNumber}>
+                  <TableCell className="force-readable-text">
+                    {c.deviceName}
+                  </TableCell>
+                  <TableCell className="link-cell force-readable-text">
+                    {c.serialNumber}
+                  </TableCell>
+                  <TableCell className="force-readable-text">
+                    {c.facility}
+                  </TableCell>
                   <TableCell>
                     <Chip
-                      label={contract.contractType}
-                      className={`chip ${contract.contractType.toLowerCase()}`}
+                      label={c.contractType}
+                      className={`chip ${c.contractType.toLowerCase()}`}
                     />
                   </TableCell>
-                  <TableCell className="force-readable-text">{contract.expiryDate}</TableCell>
-                  <TableCell className="force-readable-text">{getDaysRemaining(contract.expiryDate)}</TableCell>
+                  <TableCell className="force-readable-text">
+                    {c.expiryDate}
+                  </TableCell>
+                  <TableCell className="force-readable-text">
+                    {getDaysRemaining(c.expiryDate)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Box>
-
-      {/* Export */}
       <Box className="export-button">
         <Button variant="outlined" onClick={() => exportContractsToCSV(data)}>
           Export Report

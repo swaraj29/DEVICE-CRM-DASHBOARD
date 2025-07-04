@@ -1,9 +1,9 @@
 // Alerts.jsx
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAlerts } from '../../redux/slices/alertSlice';
-import { fetchDevices } from '../../redux/slices/deviceSlice';
-import { addAlert } from '../../api/alerts';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAlerts } from "../../redux/slices/alertSlice";
+import { fetchDevices } from "../../redux/slices/deviceSlice";
+import { addAlert } from "../../api/alerts";
 import {
   Box,
   Typography,
@@ -13,9 +13,9 @@ import {
   Grid,
   MenuItem,
   Divider,
-} from '@mui/material';
-import { ReportProblem } from '@mui/icons-material';
-import './Alerts.scss';
+} from "@mui/material";
+import { ReportProblem } from "@mui/icons-material";
+import "./Alerts.scss";
 
 const Alerts = () => {
   const dispatch = useDispatch();
@@ -24,9 +24,9 @@ const Alerts = () => {
   const loading = useSelector((state) => state.alerts.loading);
 
   const [formData, setFormData] = useState({
-    deviceId: '',
-    issue: '',
-    photo: '',
+    deviceId: "",
+    issue: "",
+    photo: "",
   });
 
   useEffect(() => {
@@ -52,47 +52,106 @@ const Alerts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.deviceId || !formData.issue) {
-      alert('Please fill in all fields.');
+      alert("Please fill in all fields.");
       return;
     }
     try {
       await addAlert(formData);
       dispatch(fetchAlerts());
-      setFormData({ deviceId: '', issue: '', photo: '' });
+      setFormData({ deviceId: "", issue: "", photo: "" });
     } catch (err) {
-      console.error('Failed to add alert:', err);
+      console.error("Failed to add alert:", err);
     }
   };
 
   return (
     <Box className="alerts-container">
       {/* Header Section with stats */}
-      <Box className="header-section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
-        <Box className="title-block" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <ReportProblem style={{ fontSize: 40, color: '#1976d2', marginRight: 12 }} />
+      <Box
+        className="header-section"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 32,
+        }}
+      >
+        <Box
+          className="title-block"
+          style={{ display: "flex", alignItems: "center", gap: 16 }}
+        >
+          <ReportProblem
+            style={{ fontSize: 40, color: "#1976d2", marginRight: 12 }}
+          />
           <Box>
             <Typography variant="h4" className="title">
               Alerts & Photo Logs
             </Typography>
-            <Typography variant="subtitle1" className="subtitle" style={{ color: 'var(--text-color, #666)' }}>
+            <Typography
+              variant="subtitle1"
+              className="subtitle"
+              style={{ color: "var(--text-color, #666)" }}
+            >
               Report device issues and view maintenance logs
             </Typography>
           </Box>
         </Box>
-        <Box style={{ display: 'flex', gap: 16 }}>
-          <Paper elevation={2} className="stat-card" style={{ padding: '12px 24px', borderRadius: 12, minWidth: 120, textAlign: 'center', background: 'var(--card-bg, #fafafa)' }}>
-            <Typography variant="h6" style={{ fontWeight: 700, color: '#1976d2' }}>{alerts.length}</Typography>
-            <Typography variant="body2" style={{ color: 'var(--text-color, #666)' }}>Total Alerts</Typography>
+        <Box style={{ display: "flex", gap: 16 }}>
+          <Paper
+            elevation={2}
+            className="stat-card"
+            style={{
+              padding: "12px 24px",
+              borderRadius: 12,
+              minWidth: 120,
+              textAlign: "center",
+              background: "var(--card-bg, #fafafa)",
+            }}
+          >
+            <Typography
+              variant="h6"
+              style={{ fontWeight: 700, color: "#1976d2" }}
+            >
+              {alerts.length}
+            </Typography>
+            <Typography
+              variant="body2"
+              style={{ color: "var(--text-color, #666)" }}
+            >
+              Total Alerts
+            </Typography>
           </Paper>
-          <Paper elevation={2} className="stat-card" style={{ padding: '12px 24px', borderRadius: 12, minWidth: 120, textAlign: 'center', background: 'var(--card-bg, #fafafa)' }}>
-            <Typography variant="h6" style={{ fontWeight: 700, color: '#43a047' }}>{devices.length}</Typography>
-            <Typography variant="body2" style={{ color: 'var(--text-color, #666)' }}>Active Devices</Typography>
+          <Paper
+            elevation={2}
+            className="stat-card"
+            style={{
+              padding: "12px 24px",
+              borderRadius: 12,
+              minWidth: 120,
+              textAlign: "center",
+              background: "var(--card-bg, #fafafa)",
+            }}
+          >
+            <Typography
+              variant="h6"
+              style={{ fontWeight: 700, color: "#43a047" }}
+            >
+              {devices.length}
+            </Typography>
+            <Typography
+              variant="body2"
+              style={{ color: "var(--text-color, #666)" }}
+            >
+              Active Devices
+            </Typography>
           </Paper>
         </Box>
       </Box>
 
       <Paper className="form-section">
-        <Typography variant="h6" gutterBottom>📩 Report a Device Issue</Typography>
+        <Typography variant="h6" gutterBottom>
+          📩 Report a Device Issue
+        </Typography>
         <form onSubmit={handleSubmit} className="alert-form">
           <TextField
             select
@@ -122,22 +181,49 @@ const Alerts = () => {
           />
 
           <Box className="upload-photo-block">
-            <Button variant="outlined" component="label" className="upload-photo-btn">
+            <Button
+              variant="outlined"
+              component="label"
+              className="upload-photo-btn"
+            >
               <span className="upload-photo-icon">📷</span> Upload Photo
-              <input hidden type="file" accept="image/*" onChange={handlePhotoUpload} />
+              <input
+                hidden
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoUpload}
+              />
             </Button>
             {formData.photo && (
               <Box className="preview-img">
-                <Typography variant="body2" sx={{ mt: 1 }}>Preview:</Typography>
-                <img src={formData.photo} alt="Preview" className="alert-photo" />
-                <Button size="small" color="error" className="remove-photo-btn" onClick={() => setFormData(prev => ({ ...prev, photo: '' }))}>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  Preview:
+                </Typography>
+                <img
+                  src={formData.photo}
+                  alt="Preview"
+                  className="alert-photo"
+                />
+                <Button
+                  size="small"
+                  color="error"
+                  className="remove-photo-btn"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, photo: "" }))
+                  }
+                >
                   Remove
                 </Button>
               </Box>
             )}
           </Box>
 
-          <Button type="submit" variant="contained" color="primary" className="submit-btn">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className="submit-btn"
+          >
             Submit Alert
           </Button>
         </form>
@@ -146,7 +232,9 @@ const Alerts = () => {
       <Divider sx={{ my: 4 }} />
 
       <Box className="alert-list">
-        <Typography variant="h6" gutterBottom>🧾 Submitted Alerts</Typography>
+        <Typography variant="h6" gutterBottom>
+          🧾 Submitted Alerts
+        </Typography>
         <Grid container spacing={2}>
           {loading ? (
             <Typography>Loading...</Typography>
@@ -163,7 +251,11 @@ const Alerts = () => {
                     <strong>Issue:</strong> {alert.issue}
                   </Typography>
                   {alert.photo && (
-                    <img src={alert.photo} alt="Alert" className="alert-photo" />
+                    <img
+                      src={alert.photo}
+                      alt="Alert"
+                      className="alert-photo"
+                    />
                   )}
                 </Paper>
               </Grid>
