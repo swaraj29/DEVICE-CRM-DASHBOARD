@@ -14,11 +14,19 @@ Backend: [https://device-crm-api.onrender.com](https://device-crm-api.onrender.c
 
 ## Screenshots
 
-| Dashboard (Light) | Dashboard (Dark) |
-|:----------------:|:----------------:|
-| ![Dashboard Light](./public/screenshot-light.png) | ![Dashboard Dark](./public/screenshot-dark.png) |
+| Device Inventory (Light) | Device Inventory (Dark) |
+|:-----------------------:|:----------------------:|
+| ![Device Inventory Light](./public/screenshot1.png) | ![Device Inventory Dark](./public/screenshot1_dark.png) |
 
-> _Add your own screenshots to the `public/` folder and update the filenames above if needed._
+| Contract Management | Service Visit | Alerts & Photo Logs |
+|:-------------------:|:-------------:|:-------------------:|
+| ![Contract Management](./public/screenshot2.png) | ![Service Visit](./public/screenshot3.png) | ![Alerts & Photo Logs](./public/screenshot4.png) |
+
+| Installation (Unboxing) |
+|:----------------------:|
+| ![Installation Unboxing](./public/screenshot5.png) |
+
+> _Screenshots: Device Inventory (light/dark), Contract Management, Service Visit, Alerts & Photo Logs, Installation Unboxing._
 
 ---
 
