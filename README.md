@@ -18,11 +18,11 @@ Backend: [https://device-crm-api.onrender.com](https://device-crm-api.onrender.c
 |:-----------------------:|:----------------------:|
 | ![Device Inventory Light](./public/screenshot1.png) | ![Device Inventory Dark](./public/screenshot1_dark.png) |
 
-| Contract Management | Service Visit | Alerts & Photo Logs |
+| Installation (Unboxing) t | Service Visit | Contract Management |
 |:-------------------:|:-------------:|:-------------------:|
 | ![Contract Management](./public/screenshot2.png) | ![Service Visit](./public/screenshot3.png) | ![Alerts & Photo Logs](./public/screenshot4.png) |
 
-| Installation (Unboxing) |
+| Alerts & Photo Logs|
 |:----------------------:|
 | ![Installation Unboxing](./public/screenshot5.png) |
 
