@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -8,15 +8,42 @@ import {
   Select,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useSelector } from 'react-redux';
 
 const engineers = ['John Doe', 'Alice Smith', 'Ravi Kumar'];
 const purposes = ['Preventive', 'Breakdown', 'Maintenance'];
 const conditions = ['Yes', 'No'];
 
 const ServiceDataSection = ({ form, formDispatch }) => {
+  const devices = useSelector((state) => state.devices.data);
+
+  // When deviceId changes, auto-fill facility
+  useEffect(() => {
+    if (form.deviceId && devices.length > 0) {
+      const selectedDevice = devices.find(
+        (d) => String(d.id) === String(form.deviceId)
+      );
+      if (selectedDevice && selectedDevice.facility !== form.facility) {
+        formDispatch({
+          type: 'SET_FIELD',
+          field: 'facility',
+          value: selectedDevice.facility || '',
+        });
+      }
+    } else if (!form.deviceId && form.facility) {
+      // Clear facility if deviceId is cleared
+      formDispatch({ type: 'SET_FIELD', field: 'facility', value: '' });
+    }
+  }, [form.deviceId, devices]);
+
   const handleChange = (field) => (e) => {
     const value = e.target.value;
     formDispatch({ type: 'SET_FIELD', field, value });
+    // Auto-fill facility when deviceId changes
+    if (field === 'deviceId') {
+      const selectedDevice = devices.find((d) => String(d.id) === String(value));
+      formDispatch({ type: 'SET_FIELD', field: 'facility', value: selectedDevice ? selectedDevice.facility : '' });
+    }
   };
 
   return (
@@ -41,9 +68,11 @@ const ServiceDataSection = ({ form, formDispatch }) => {
             <MenuItem value="" disabled className="card-white-text-dark">
               Select device
             </MenuItem>
-            {/* Example device items */}
-            <MenuItem value="D001">D001 — X-Ray</MenuItem>
-            <MenuItem value="D002">D002 — MRI</MenuItem>
+            {devices && devices.length > 0 && devices.map((device) => (
+              <MenuItem key={device.id} value={device.id} className="card-white-text-dark">
+                {device.id} — {device.name || device.type || 'Device'}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Box>
