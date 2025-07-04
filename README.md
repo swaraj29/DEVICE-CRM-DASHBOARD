@@ -18,15 +18,19 @@ Backend: [https://device-crm-api.onrender.com](https://device-crm-api.onrender.c
 |:-----------------------:|:----------------------:|
 | ![Device Inventory Light](./public/screenshot1.png) | ![Device Inventory Dark](./public/screenshot1_dark.png) |
 
-| Installation (Unboxing) t | Service Visit | Contract Management |
-|:-------------------:|:-------------:|:-------------------:|
-| ![Contract Management](./public/screenshot2.png) | ![Service Visit](./public/screenshot3.png) | ![Alerts & Photo Logs](./public/screenshot4.png) |
+|   Installation (Unboxing)  | Contract Management (Dark) |
+|:--------------------------:|:--------------------------:|
+| ![Contract Management](./public/screenshot2.png) | ![Contract Management Dark](./public/screenshot6.png) |
 
-| Alerts & Photo Logs|
-|:----------------------:|
-| ![Installation Unboxing](./public/screenshot5.png) |
+| Service Visit |Contract Management|Alerts & Photo Logs |
+|:-------------:|:----------------------------:|:----------------------:|
+| ![Service Visit](./public/screenshot3.png) | ![Alerts & Photo Logs](./public/screenshot4.png) | ![Installation Unboxing](./public/screenshot5.png) |
 
-> _Screenshots: Device Inventory (light/dark), Contract Management, Service Visit, Alerts & Photo Logs, Installation Unboxing._
+| Alerts & Photo Logs (Mobile) | Mobile Hamburger Menu |
+|:---------------------------:|:---------------------:|
+| ![Alerts & Photo Logs Mobile](./public/screenshot7.png) | ![Mobile Hamburger](./public/screenshot8.png) |
+
+> _Screenshots: Device Inventory (light/dark), Contract Management (light/dark), Service Visit, Alerts & Photo Logs (desktop/mobile), Installation Unboxing, Mobile Hamburger._
 
 ---
 
